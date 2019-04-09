@@ -1,0 +1,25 @@
+{
+  "name": "friendnet",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maxchehab/friendnet.git"
+  },
+  "version": "1.0.0",
+  "description": "Frontend.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "Max Chehab",
+  "license": "ISC",
+  "dependencies": {
+    "@fullpage/react-fullpage": "^0.1.13",
+    "next": "^6.0.3",
+    "rc-slider": "^8.6.9",
+    "react": "^16.4.1",
+    "react-animation-frame": "^1.0.2",
+    "react-dom": "^16.4.1"
+  }
+}
