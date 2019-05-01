@@ -48,6 +48,8 @@ export default class MobileApp extends React.Component {
           dag={this.props.dag}
           currentNodeIndex={this.props.currentNodeIndex}
           changeFriendValue={this.props.changeFriendValue}
+          drawPath={this.props.drawPath}
+          removePath={this.props.removePath}
           nodes={this.props.dag.nodes}
           currentNodeIndex={this.props.nodeIndex}
         />
@@ -63,9 +65,12 @@ export default class MobileApp extends React.Component {
         >
           {feed.map(post => (
             <Post
+              drawPath={this.props.drawPath}
               key={`post-${post.id}`}
               data={post}
               node={this.props.dag.nodes[post.user]}
+              drawPath={this.props.drawPath}
+              removePath={this.props.removePath}
               currentNodeIndex={this.props.nodeIndex}
               changeFriendValue={this.props.changeFriendValue}
               dag={this.props.dag}

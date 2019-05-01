@@ -19,6 +19,8 @@ export default class Post extends React.Component {
             currentNodeIndex={this.props.currentNodeIndex}
             node={this.props.node}
             changeFriendValue={this.props.changeFriendValue}
+            drawPath={this.props.drawPath}
+            removePath={this.props.removePath}
             where={"post"}
           />
         </div>

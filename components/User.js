@@ -42,6 +42,15 @@ export default class User extends React.Component {
           paddingLeft: "10px",
           paddingRight: "10px"
         }}
+        onMouseEnter={() => {
+          this.props.drawPath(
+            this.props.currentNodeIndex,
+            this.props.node.index
+          );
+        }}
+        onMouseLeave={() => {
+          this.props.removePath();
+        }}
       >
         <style>{`
         input::-webkit-slider-runnable-track { background: #ef4f6c; height: 5px;  border-radius: 5px; }

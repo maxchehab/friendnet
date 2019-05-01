@@ -190,6 +190,9 @@ class NodeController extends React.Component {
               dag={this.props.dag}
               nodeIndex={index}
               changeFriendValue={this.props.changeFriendValue}
+              drawPath={this.props.drawPath}
+              removePath={this.props.removePath}
+              path={this.props.dag.nodes[index].path}
             />
           );
         })}
@@ -207,6 +210,7 @@ class NodeController extends React.Component {
               from={from}
               to={to}
               value={edge.data.friendValue}
+              path={edge.data.path}
             />
           );
         })}

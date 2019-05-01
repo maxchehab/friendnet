@@ -65,7 +65,7 @@ export default class Node extends React.Component {
             backgroundColor: "262626",
             borderStyle: "solid",
             borderWidth: "3px",
-            borderColor: "#ef4f6c",
+            borderColor: this.props.path ? "#99ccff" : "#ef4f6c",
             overflow: "hidden",
             backgroundSize: "contain",
             transition: "width 100ms, height 100ms, border-radius 100ms",
@@ -118,6 +118,8 @@ export default class Node extends React.Component {
               nodeIndex={this.props.nodeIndex}
               dag={this.props.dag}
               changeFriendValue={this.props.changeFriendValue}
+              drawPath={this.props.drawPath}
+              removePath={this.props.removePath}
             />
           </div>
         </div>
