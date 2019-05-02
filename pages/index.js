@@ -9,6 +9,7 @@ export default class Index extends React.Component {
     super(props);
     this.state = {
       DAG: {
+        eventStack: [],
         nodes: [
           {
             index: 0,
@@ -23,13 +24,15 @@ export default class Index extends React.Component {
                   name: "Distracted Boyfriend",
                   url: "https://i.imgflip.com/1ur9b0.jpg",
                   time: 1554681191100,
-                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a1"
+                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a1",
+                  likes: [3]
                 },
                 {
                   name: "Expanding Brain",
                   url: "https://i.imgflip.com/1jwhww.jpg",
                   time: 1554681191200,
-                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a2"
+                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a2",
+                  likes: []
                 }
               ]
             },
@@ -88,13 +91,15 @@ export default class Index extends React.Component {
                   name: "Two Buttons",
                   url: "https://i.imgflip.com/1g8my4.jpg",
                   time: 1554681191300,
-                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a3"
+                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a3",
+                  likes: []
                 },
                 {
                   name: "Surprised Pikachu",
                   url: "https://i.imgflip.com/2kbn1e.jpg",
                   time: 1554681191400,
-                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a4"
+                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a4",
+                  likes: []
                 }
               ]
             },
@@ -114,13 +119,15 @@ export default class Index extends React.Component {
                   name: "Change My Mind",
                   url: "https://i.imgflip.com/24y43o.jpg",
                   time: 1554681191500,
-                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a5"
+                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a5",
+                  likes: []
                 },
                 {
                   name: "Mocking Spongebob",
                   url: "https://i.imgflip.com/1otk96.jpg",
                   time: 1554681191600,
-                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a6"
+                  id: "5ecdf7c5-8669-4c19-bb16-469433eca0a6",
+                  likes: []
                 }
               ]
             },
@@ -148,7 +155,7 @@ export default class Index extends React.Component {
     };
   }
 
-  changeFriendValue(from, to, value, where) {
+  changeFriendValue(from, to, value) {
     let DAG = { ...this.state.DAG };
 
     for (let i = 0; i < DAG.edges.length; i++) {
@@ -200,13 +207,40 @@ export default class Index extends React.Component {
     this.setState({ DAG });
   }
 
+  like(from, to, post) {
+    let DAG = { ...this.state.DAG };
+
+    for (let i = 0; i < DAG.nodes[to].profile.posts.length; i++) {
+      if (DAG.nodes[to].profile.posts[i].id == post) {
+        if (DAG.nodes[to].profile.posts[i].likes.includes(from)) {
+          DAG.nodes[to].profile.posts[i].likes = DAG.nodes[to].profile.posts[
+            i
+          ].likes.filter(e => {
+            return e !== from;
+          });
+
+          DAG.eventStack = DAG.eventStack.filter(e => {
+            return e.from !== from || e.to !== to || e.id !== post;
+          });
+        } else {
+          DAG.nodes[to].profile.posts[i].likes.push(from);
+          DAG.eventStack.push({ type: "like", from: from, to: to, id: post });
+        }
+        break;
+      }
+    }
+
+    this.setState({ DAG });
+  }
+
   render() {
     return (
       <Friendnet>
         <NodeController
           dag={this.state.DAG}
-          changeFriendValue={(f, t, v, w) => this.changeFriendValue(f, t, v, w)}
+          changeFriendValue={(f, t, v) => this.changeFriendValue(f, t, v)}
           drawPath={(f, t) => this.drawPath(f, t)}
+          like={(f, t, p) => this.like(f, t, p)}
           removePath={() => this.removePath()}
         />
       </Friendnet>

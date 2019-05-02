@@ -15,7 +15,12 @@ export default class Search extends React.Component {
       query: event.target.value,
       searching: event.target.value.length > 0,
       results: this.props.nodes.filter(node => {
-        return node.profile.username.match(event.target.value);
+        try {
+          let result = node.profile.username.match(event.target.value);
+          return result;
+        } catch (e) {
+          return false;
+        }
       })
     });
   }
@@ -61,7 +66,6 @@ export default class Search extends React.Component {
                     }}
                   >
                     <User
-                      where={"search"}
                       node={node}
                       dag={this.props.dag}
                       currentNodeIndex={this.props.currentNodeIndex}

@@ -120,6 +120,7 @@ export default class Node extends React.Component {
               changeFriendValue={this.props.changeFriendValue}
               drawPath={this.props.drawPath}
               removePath={this.props.removePath}
+              like={this.props.like}
             />
           </div>
         </div>

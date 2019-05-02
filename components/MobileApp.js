@@ -11,6 +11,7 @@ export default class MobileApp extends React.Component {
           url: post.url,
           time: post.time,
           id: post.id,
+          likes: post.likes,
           user: this.props.nodeIndex
         };
       }
@@ -26,12 +27,67 @@ export default class MobileApp extends React.Component {
           url: post.url,
           time: post.time,
           id: post.id,
+          likes: post.likes,
           user: edge.to
         });
       }
     });
 
     feed = feed.sort((a, b) => a.time > b.time);
+    let suggestion = <div />;
+    let edges = this.props.dag.nodes[this.props.nodeIndex].edges.map(
+      edgeIndex => this.props.dag.edges[edgeIndex]
+    );
+
+    eventStackLoop: for (
+      let i = this.props.dag.eventStack.length - 1;
+      i >= 0;
+      i--
+    ) {
+      let event = this.props.dag.eventStack[i];
+      if (event.type != "like") continue;
+      for (let edge of edges) {
+        if (edge.to == event.from && edge.data.friendValue > 7) {
+          let post = null;
+          for (let p of this.props.dag.nodes[event.to].profile.posts) {
+            if (p.id == event.id) {
+              post = p;
+              break;
+            }
+          }
+
+          if (post == null) break;
+
+          post = {
+            name: post.name,
+            url: post.url,
+            time: post.time,
+            id: post.id,
+            likes: post.likes,
+            user: event.to
+          };
+
+          console.log(`found post: ${post.name}`);
+
+          suggestion = (
+            <Post
+              recommendation={true}
+              friend={this.props.dag.nodes[event.from].profile.username}
+              like={this.props.like}
+              drawPath={this.props.drawPath}
+              data={post}
+              node={this.props.dag.nodes[post.user]}
+              drawPath={this.props.drawPath}
+              removePath={this.props.removePath}
+              currentNodeIndex={this.props.nodeIndex}
+              changeFriendValue={this.props.changeFriendValue}
+              dag={this.props.dag}
+            />
+          );
+          break eventStackLoop;
+        }
+      }
+    }
 
     return (
       <div
@@ -63,8 +119,10 @@ export default class MobileApp extends React.Component {
             padding: "15px"
           }}
         >
+          {suggestion}
           {feed.map(post => (
             <Post
+              like={this.props.like}
               drawPath={this.props.drawPath}
               key={`post-${post.id}`}
               data={post}

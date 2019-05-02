@@ -7,8 +7,7 @@ export default class User extends React.Component {
     this.props.changeFriendValue(
       this.props.currentNodeIndex,
       this.props.node.index,
-      event.target.value,
-      this.props.where
+      event.target.value
     );
   }
 

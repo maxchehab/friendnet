@@ -190,6 +190,7 @@ class NodeController extends React.Component {
               dag={this.props.dag}
               nodeIndex={index}
               changeFriendValue={this.props.changeFriendValue}
+              like={this.props.like}
               drawPath={this.props.drawPath}
               removePath={this.props.removePath}
               path={this.props.dag.nodes[index].path}
